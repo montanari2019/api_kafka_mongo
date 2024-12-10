@@ -20,8 +20,6 @@ export class RoutesService {
 
     const legs = routes[0].legs[0]
 
-    // console.log(legs);
-
     const item = await this.prismaServices.route.create({
       data: {
         name: createRouteDto.name,
