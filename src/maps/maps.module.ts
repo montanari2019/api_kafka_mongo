@@ -7,6 +7,7 @@ import { DirectionsService } from './directions/directions.service';
 
 @Module({
   controllers: [PlacesController, DirectionsController],
+  exports: [DirectionsService],
   providers: [PlacesService, {
     provide: GoogleMapsClient,
     useValue: new GoogleMapsClient()

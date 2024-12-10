@@ -2,24 +2,26 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { RoutesService } from './routes.service';
 import { CreateRouteDto } from './dto/create-route.dto';
 import { UpdateRouteDto } from './dto/update-route.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('routes')
+@ApiTags("Routes")
 export class RoutesController {
   constructor(private readonly routesService: RoutesService) {}
 
-  @Post()
+  @Post('create ')
   create(@Body() createRouteDto: CreateRouteDto) {
     return this.routesService.create(createRouteDto);
   }
 
-  @Get()
+  @Get('find')
   findAll() {
     return this.routesService.findAll();
   }
 
-  @Get(':id')
+  @Get('find/one/:id')
   findOne(@Param('id') id: string) {
-    return this.routesService.findOne(+id);
+    return this.routesService.findOne(id);
   }
 
   @Patch(':id')

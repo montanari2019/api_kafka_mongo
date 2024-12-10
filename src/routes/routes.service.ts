@@ -2,21 +2,64 @@ import { Injectable } from '@nestjs/common';
 import { CreateRouteDto } from './dto/create-route.dto';
 import { UpdateRouteDto } from './dto/update-route.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { DirectionsService } from 'src/maps/directions/directions.service';
 
 @Injectable()
 export class RoutesService {
+  constructor(
+    private readonly prismaServices: PrismaService,
+    private readonly directionService: DirectionsService,
+  ) {}
+  async create(createRouteDto: CreateRouteDto) {
+    const { available_travel_modes, geocoded_waypoints, routes, request } =
+      await this.directionService.getDirection(
+        createRouteDto.source_id,
+        createRouteDto.destination_id,
+      );
 
-  constructor (private readonly prismaServices: PrismaService){}
-  create(createRouteDto: CreateRouteDto) {
-    return 'This action adds a new route';
+    const legs = routes[0].legs[0];
+
+    return await this.prismaServices.route.create({
+      data: {
+        name: createRouteDto.name,
+        source: {
+          name: legs.start_address,
+          location: {
+            lat: legs.start_location.lat,
+            lng: legs.start_location.lng,
+          },
+        },
+        destination: {
+          name: legs.end_address,
+          location: {
+            lat: legs.end_location.lat,
+            lng: legs.end_location.lng,
+          },
+        },
+        duration: legs.duration.value,
+        distance: legs.distance.value,
+        directions: JSON.parse(
+          JSON.stringify({
+            available_travel_modes,
+            geocoded_waypoints,
+            routes,
+            request,
+          }),
+        ),
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all routes`;
+  async findAll() {
+    return await this.prismaServices.route.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} route`;
+  async findOne(id: string) {
+    return await this.prismaServices.route.findUniqueOrThrow({
+      where: {
+        id
+      }
+    });
   }
 
   update(id: number, updateRouteDto: UpdateRouteDto) {
