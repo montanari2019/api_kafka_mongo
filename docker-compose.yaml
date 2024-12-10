@@ -1,18 +1,9 @@
+version: "3.8"
 services:
-  # app:
-  #   build: .
-  #   volumes:
-  #     - .:/home/node/app
-  #   ports:
-  #     - 2106:2106
   db:
     build: ./.docker/mongodb
-    image: ikaromontanari/mongodb_multi_nodes
-    # environment:
-    #   MONGO_INITDB_ROOT_USERNAME: root
-    #   MONGO_INITDB_ROOT_PASSWORD: root
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
     ports:
       - 27017:27017
-
-
-

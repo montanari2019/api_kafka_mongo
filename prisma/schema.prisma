@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Route {
-  id          String   @id @default(uuid()) @map("_id") @db.ObjectId
+  id          String   @id @default(uuid()) @map("_id")
   name        String
   source      Place
   destination Place

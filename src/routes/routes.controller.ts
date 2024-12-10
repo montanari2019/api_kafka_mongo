@@ -2,14 +2,29 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { RoutesService } from './routes.service';
 import { CreateRouteDto } from './dto/create-route.dto';
 import { UpdateRouteDto } from './dto/update-route.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('routes')
 @ApiTags("Routes")
 export class RoutesController {
   constructor(private readonly routesService: RoutesService) {}
 
-  @Post('create ')
+  @Post('create')
+  @ApiOperation({ summary: 'Create a new route' })
+  @ApiBody({
+    description: 'Data required to create a new route',
+    type: CreateRouteDto,
+    examples: {
+      example1: {
+        summary: 'Example route creation',
+        value: {
+          name: 'Route 1',
+          source_id: 'ChIJRc3GYprDpgARAyym45ZpJZ0',
+          destination_id: 'ChIJ9eHNTfqZpgARXXppdts-QGs',
+        },
+      },
+    },
+  })
   create(@Body() createRouteDto: CreateRouteDto) {
     return this.routesService.create(createRouteDto);
   }

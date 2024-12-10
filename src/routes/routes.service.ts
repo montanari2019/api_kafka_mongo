@@ -17,9 +17,12 @@ export class RoutesService {
         createRouteDto.destination_id,
       );
 
-    const legs = routes[0].legs[0];
 
-    return await this.prismaServices.route.create({
+    const legs = routes[0].legs[0]
+
+    // console.log(legs);
+
+    const item = await this.prismaServices.route.create({
       data: {
         name: createRouteDto.name,
         source: {
@@ -48,6 +51,8 @@ export class RoutesService {
         ),
       },
     });
+
+    return item
   }
 
   async findAll() {
