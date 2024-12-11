@@ -14,15 +14,16 @@ datasource db {
 }
 
 model Route {
-  id          String   @id @default(uuid()) @map("_id")
+  id          String       @id @default(uuid()) @map("_id")
   name        String
   source      Place
   destination Place
   distance    Float
   duration    Float
   directions  Json
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+  RouteDriver RouteDriver?
 }
 
 type Place {
@@ -35,4 +36,17 @@ type Coord {
   lng Float
 }
 
+model RouteDriver {
+  id         String   @id @default(uuid()) @map("_id")
+  route      Route    @relation(fields: [route_id], references: [id])
+  route_id   String   @unique 
+  points     Point[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  //status - iniciado, finalizado
+}
 
+type Point {
+  location   Coord
+  created_at DateTime @default(now())
+}

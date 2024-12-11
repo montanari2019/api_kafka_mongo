@@ -3,11 +3,12 @@ import { RoutesService } from './routes.service';
 import { CreateRouteDto } from './dto/create-route.dto';
 import { UpdateRouteDto } from './dto/update-route.dto';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { RouteDriverService } from './route-driver/route-driver.service';
 
 @Controller('routes')
 @ApiTags("Routes")
 export class RoutesController {
-  constructor(private readonly routesService: RoutesService) {}
+  constructor(private readonly routesService: RoutesService, private readonly routesDriveService: RouteDriverService) {}
 
   @Post('create')
   @ApiOperation({ summary: 'Create a new route' })

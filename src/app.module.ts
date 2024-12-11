@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { RoutesModule } from './routes/routes.module';
 import { PrismaModule } from './prisma/prisma.module';
 
+
 @Module({
   imports: [MapsModule, ConfigModule.forRoot({
     isGlobal: true,
