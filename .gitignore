@@ -3,6 +3,10 @@
 /node_modules
 /build
 .env
+/initiate-replica-set.sh
+/mongodb-data;C
+
+
 
 # Logs
 logs

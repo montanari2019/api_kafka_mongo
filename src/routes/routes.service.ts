@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateRouteDto } from './dto/create-route.dto';
 import { UpdateRouteDto } from './dto/update-route.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -11,11 +11,14 @@ export class RoutesService {
     private readonly directionService: DirectionsService,
   ) {}
   async create(createRouteDto: CreateRouteDto) {
+ 
     const { available_travel_modes, geocoded_waypoints, routes, request } =
       await this.directionService.getDirection(
         createRouteDto.source_id,
         createRouteDto.destination_id,
-      );
+      ).catch((error) =>{
+        throw new BadRequestException(error)
+      });
 
 
     const legs = routes[0].legs[0]
